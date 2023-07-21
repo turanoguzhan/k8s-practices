@@ -1,0 +1,30 @@
+S-1 > Create a single Pod of image httpd:2.4.41-alpine in Namespace default. The Pod should be named pod1 and the container should be named pod1-container.
+Your manager would like to run a command manually on occasion to output the status of that exact Pod. Please write a command that does this into /opt/course/2/pod1-status-command.sh. The command should use kubectl.
+C-1 > k run pod1 --image=httpd:2.4.41-alpine $do > 2.yaml
+
+S-2 > Readiness-Probe
+Create a single Pod named pod6 in Namespace default of image busybox:1.31.0. 
+The Pod should have a readiness-probe executing cat /tmp/ready. 
+It should initially wait 5 and periodically wait 10 seconds. 
+This will set the container ready only if the file /tmp/ready exists.
+The Pod should run the command touch /tmp/ready && sleep 1d, which will create the necessary file to be ready and then idles. 
+Create the Pod and confirm it starts.
+C-2 > k run pod6 --image=busybox:1.31.0 $do --command -- sh -c "touch /tmp/ready && sleep 1d" > 6.yaml
+k run pod6 --image=busybox:1.31.0 --dry-run=client -o yaml >  pod6.yaml
+vim pod6.yaml and modify or add necessary parts to complete the task.
+k 
+
+S-3 > Create a Deployment named space-alien-welcome-message-generator of image httpd:alpine with one replica.
+It should've a ReadinessProbe which executes the command stat /tmp/ready . 
+This means once the file exists the Pod should be ready.
+The initialDelaySeconds should be 10 and periodSeconds should be 5 .
+Create the Deployment and observe that the Pod won't get ready.
+C-3 > 
+k create deployment space-alien-welcome-message-generator --image=httpd:alpine $do > deploy_rp.yaml
+vim deploy_rp.yaml
+and add th readinessProbe parts.
+we won't see deployment is ready because there is no such file in the specified directory.
+To get running state for deployment, we should create the file into the container.
+To do that,
+k exec POD_NAME -- touch /tmp/ready
+
