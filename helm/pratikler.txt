@@ -1,0 +1,26 @@
+S-1 > Team Mercury asked you to perform some operations using Helm, all in Namespace mercury:
+
+Delete release internal-issue-report-apiv1
+Upgrade release internal-issue-report-apiv2 to any newer version of chart bitnami/nginx available
+Install a new release internal-issue-report-apache of chart bitnami/apache. The Deployment should have two replicas, set these via Helm-values during install
+There seems to be a broken release, stuck in pending-install state. Find it and delete it
+
+C-1 > Helm Chart: Kubernetes YAML template-files combined into a single package, Values allow customisation
+Helm Release: Installed instance of a Chart
+Helm Values: Allow to customise the YAML template-files in a Chart when creating a Release
+
+helm -n mercury ls
+helm -n mercury uninstall internal-issue-report-apiv1
+helm repo list
+helm repo update
+helm search repo nginx
+helm -n mercury upgrade internal-issue-report-apiv2 bitnami/nginx
+helm -n mercury ls
+helm show values bitnami/apache # will show a long list of all possible value-settings
+helm show values bitnami/apache | yq e # parse yaml and show with colors
+helm -n mercury install internal-issue-report-apache bitnami/apache --set replicaCount=2
+helm -n mercury install internal-issue-report-apache bitnami/apache \--set replicaCount=2 \--set image.debug=true
+helm -n mercury ls
+k -n mercury get deploy internal-issue-report-apache
+helm -n mercury ls -a
+helm -n mercury uninstall internal-issue-report-daniel
