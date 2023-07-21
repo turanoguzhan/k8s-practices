@@ -28,3 +28,17 @@ To get running state for deployment, we should create the file into the containe
 To do that,
 k exec POD_NAME -- touch /tmp/ready
 
+
+S-4 > The board of Team Neptune decided to take over control of one e-commerce webserver from Team Saturn. 
+The administrator who once setup this webserver is not part of the organisation any longer.
+All information you could get was that the e-commerce system is called my-happy-shop.
+Search for the correct Pod in Namespace saturn and move it to Namespace neptune. 
+It doesn't matter if you shut it down and spin it up again, it probably hasn't any customers anyways.
+C-4 > 
+k -n saturn get pod
+The Pod names don't reveal any information. 
+We assume the Pod we are searching has a label or annotation with the name my-happy-shop, so we search for it:
+k -n saturn get pod --show-labels and manually find the my-happy-shop labeled pod
+k -n saturn POD_NAME -o yaml > move_pod.yaml
+vim move_pod.yaml 
+change namespace
